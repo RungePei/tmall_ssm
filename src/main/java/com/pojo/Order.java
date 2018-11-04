@@ -1,6 +1,9 @@
 package com.pojo;
 
 import java.util.Date;
+import java.util.List;
+
+import com.service.OrderService;
 
 public class Order {
     private Integer id;
@@ -28,6 +31,72 @@ public class Order {
     private Integer uid;
 
     private String status;
+
+    //    以下为非数据库字段
+    private List<Orderitem> orderItems;
+    private User user;
+    private float total;
+    private float totalNumber;
+
+    //  状态汉语描述
+    public String getStatusDesc() {
+        String desc = "未知";
+        switch (status) {
+            case OrderService.delete:
+                desc = "删除";
+                break;
+            case OrderService.finish:
+                desc = "已完成";
+                break;
+            case OrderService.waitConfirm:
+                desc = "待收货";
+                break;
+            case OrderService.waitDelivery:
+                desc = "待发货";
+                break;
+            case OrderService.waitPay:
+                desc = "待付款";
+                break;
+            case OrderService.waitReview:
+                desc = "待评价";
+                break;
+            default:
+                desc = "未知";
+        }
+        return desc;
+    }
+
+    public List<Orderitem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<Orderitem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public float getTotalNumber() {
+        return totalNumber;
+    }
+
+    public void setTotalNumber(float totalNumber) {
+        this.totalNumber = totalNumber;
+    }
 
     public Integer getId() {
         return id;

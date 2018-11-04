@@ -22,32 +22,34 @@ public class PropertyValueServiceImpl implements PropertyValueService {
     ProductService productService;
 
     @Override
-    public List<Propertyvalue> init(int pid) {
+    public void init(int pid) {
         List<Property> pts = propertyService.list(productService.get(pid).getCid());
         for (Property pt : pts) {
             Propertyvalue pv = get(pid, pt.getId());
             if (pv == null) {
                 pv = new Propertyvalue();
-                pv.setProperty(pt);
                 pv.setPid(pid);
                 pv.setPtid(pt.getId());
                 mapper.insert(pv);
             }
         }
-        return null;
     }
 
     @Override
     public List<Propertyvalue> list(int pid) {
-        PropertyvalueExample example=new PropertyvalueExample();
+        PropertyvalueExample example = new PropertyvalueExample();
         example.createCriteria().andPidEqualTo(pid);
-        List<Propertyvalue> pvs=mapper.selectByExample(example);
+        List<Propertyvalue> pvs = mapper.selectByExample(example);
+        for (Propertyvalue pv : pvs) {
+            Property property=propertyService.get(pv.getPtid());
+            pv.setProperty(property);
+        }
         return pvs;
     }
 
     @Override
     public void update(Propertyvalue pv) {
-        
+        mapper.updateByPrimaryKeySelective(pv);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class PropertyValueServiceImpl implements PropertyValueService {
         PropertyvalueExample example = new PropertyvalueExample();
         example.createCriteria().andPidEqualTo(pid).andPtidEqualTo(ptid);
         List<Propertyvalue> pvs = mapper.selectByExample(example);
-        if (pvs == null)
+        if (pvs.isEmpty())
             return null;
         return pvs.get(0);
     }

@@ -21,6 +21,16 @@ public class Product {
 
     private Category category;
 
+    private Productimage firstProductImage;
+
+    public Productimage getFirstProductImage() {
+        return firstProductImage;
+    }
+
+    public void setFirstProductImage(Productimage firstProductImage) {
+        this.firstProductImage = firstProductImage;
+    }
+
     public Category getCategory() {
         return category;
     }

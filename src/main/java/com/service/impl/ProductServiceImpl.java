@@ -3,6 +3,8 @@ package com.service.impl;
 import com.mapper.ProductMapper;
 import com.pojo.Product;
 import com.pojo.ProductExample;
+import com.pojo.Productimage;
+import com.service.ProductImageService;
 import com.service.ProductService;
 import com.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductMapper productMapper;
+    @Autowired
+    ProductImageService productImageService;
 
     @Override
     public void add(Product product) {
@@ -41,6 +45,21 @@ public class ProductServiceImpl implements ProductService {
         example.createCriteria().andCidEqualTo(cid);
         example.setOrderByClause("id desc");
         List<Product> list = productMapper.selectByExample(example);
+        setFirstProductImage(list);
         return list;
+    }
+
+    @Override
+    public void setFirstProductImage(Product p) {
+        List<Productimage> images= productImageService.list(p.getId(),ProductImageService.type_single);
+        if (!images.isEmpty()){
+            p.setFirstProductImage(images.get(0));
+        }
+    }
+
+    public void setFirstProductImage(List<Product> products){
+        for (Product p:products){
+            setFirstProductImage(p);
+        }
     }
 }

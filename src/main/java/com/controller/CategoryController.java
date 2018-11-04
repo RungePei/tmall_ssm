@@ -24,23 +24,23 @@ public class CategoryController {
     CategoryService categoryService;
 
     @RequestMapping("admin_category_list")
-    public String list(Model model, Page page){
+    public String list(Model model, Page page) {
 //        List<Category> cs= categoryService.list(page);
 //        int total=categoryService.getTotal();
-        PageHelper.offsetPage(page.getStart(),page.getCount());
-        List<Category> cs= categoryService.list();
+        PageHelper.offsetPage(page.getStart(), page.getCount());
+        List<Category> cs = categoryService.list();
         int total = (int) new PageInfo<>(cs).getTotal();
         page.setTotal(total);
-        model.addAttribute("page",page);
-        model.addAttribute("cs",cs);
+        model.addAttribute("page", page);
+        model.addAttribute("cs", cs);
         return "admin/listCategory";
     }
 
     @RequestMapping("admin_category_add")
     public String add(Category category, UploadedImageFile uploadedImageFile, HttpSession session) throws IOException {
         categoryService.add(category);
-        File file=new File(session.getServletContext().getRealPath("/img/category"),
-                category.getId()+".jpg");
+        File file = new File(session.getServletContext().getRealPath("/img/category"),
+                category.getId() + ".jpg");
         System.out.println(file.getAbsolutePath());
         if (!file.getParentFile().exists())
             file.getParentFile().mkdirs();
@@ -49,18 +49,18 @@ public class CategoryController {
     }
 
     @RequestMapping("admin_category_delete")
-    public String delete(int id ,HttpSession session){
-        File file=new File(session.getServletContext().getRealPath("img/category"),id+".jpg");
+    public String delete(int id, HttpSession session) {
+        File file = new File(session.getServletContext().getRealPath("img/category"), id + ".jpg");
         file.delete();
         categoryService.delete(id);
         return "redirect:admin_category_list";
     }
 
     @RequestMapping("admin_category_update")
-    public String update(Category category , HttpSession session, MultipartFile image) throws IOException {
+    public String update(Category category, HttpSession session, MultipartFile image) throws IOException {
         categoryService.update(category);
-        if (image!=null&!image.isEmpty()){
-            File file=new File(session.getServletContext().getRealPath("img/category"), category.getId()+".jpg");
+        if (image != null & !image.isEmpty()) {
+            File file = new File(session.getServletContext().getRealPath("img/category"), category.getId() + ".jpg");
             image.transferTo(file);
         }
         return "redirect:admin_category_list";

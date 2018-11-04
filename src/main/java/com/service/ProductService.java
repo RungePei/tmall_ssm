@@ -14,4 +14,6 @@ public interface ProductService {
     void update(Product product);
 
     List<Product> list(int cid);
+
+    void setFirstProductImage(Product p);
 }
