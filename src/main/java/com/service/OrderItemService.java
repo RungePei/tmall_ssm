@@ -19,4 +19,10 @@ public interface OrderItemService {
     void fill(Order order);
 
     void fill(List<Order> orders);
+
+    int getSaleCount(int pid);
+
+    List<Orderitem> listByUser(int uid);
+
+    Orderitem get(int pid,int uid);
 }

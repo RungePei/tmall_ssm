@@ -45,8 +45,8 @@ public class OrderItemServiceImpl implements OrderItemService {
     public List<Orderitem> list() {
         OrderitemExample example = new OrderitemExample();
         example.setOrderByClause("id desc");
-        List<Orderitem> orderitems = orderitemMapper.selectByExample(example);
-        return orderitems;
+        List<Orderitem> orderItems = orderitemMapper.selectByExample(example);
+        return orderItems;
     }
 
     @Override
@@ -54,24 +54,27 @@ public class OrderItemServiceImpl implements OrderItemService {
         OrderitemExample example = new OrderitemExample();
         example.createCriteria().andOidEqualTo(order.getId());
         example.setOrderByClause("id desc");
-        List<Orderitem> orderitems = orderitemMapper.selectByExample(example);
+        List<Orderitem> orderItems = orderitemMapper.selectByExample(example);
 
         float total = 0;
         int totalNumber = 0;
-        for (Orderitem orderitem : orderitems) {
-            Product product=productService.get(orderitem.getPid());
-            productService.setFirstProductImage(product);
-            orderitem.setProduct(product);
-        }
+        setProduct(orderItems);
 
-        for (Orderitem orderitem : orderitems) {
-//            orderitem.setProduct(productService.get(orderitem.getPid()));
+        for (Orderitem orderitem : orderItems) {
             total += orderitem.getNumber() * orderitem.getProduct().getPromotePrice();
             totalNumber += orderitem.getNumber();
         }
         order.setTotal(total);
         order.setTotalNumber(totalNumber);
-        order.setOrderItems(orderitems);
+        order.setOrderItems(orderItems);
+    }
+
+    public void setProduct(List<Orderitem> orderItems) {
+        for (Orderitem orderitem : orderItems) {
+            Product product = productService.get(orderitem.getPid());
+            productService.setFirstProductImage(product);
+            orderitem.setProduct(product);
+        }
     }
 
 
@@ -81,4 +84,38 @@ public class OrderItemServiceImpl implements OrderItemService {
             fill(order);
         }
     }
+
+    @Override
+    public int getSaleCount(int pid) {
+        OrderitemExample example = new OrderitemExample();
+        example.createCriteria().andPidEqualTo(pid);
+        List<Orderitem> orderItems = orderitemMapper.selectByExample(example);
+        int count = 0;
+        for (Orderitem orderItem : orderItems) {
+            count += orderItem.getNumber();
+        }
+        return count;
+    }
+
+    @Override
+    public List<Orderitem> listByUser(int uid) {
+        OrderitemExample example=new OrderitemExample();
+        example.createCriteria().andUidEqualTo(uid).andOidIsNull();
+        List<Orderitem> orderItems=orderitemMapper.selectByExample(example);
+
+        setProduct(orderItems);
+        return orderItems;
+    }
+
+    @Override
+    public Orderitem get(int pid, int uid) {
+        OrderitemExample example=new OrderitemExample();
+        example.createCriteria().andPidEqualTo(pid).andUidEqualTo(uid);
+        List<Orderitem> ois=orderitemMapper.selectByExample(example);
+        Orderitem oi=new Orderitem();
+        if (!ois.isEmpty())
+            oi=ois.get(0);
+        return oi;
+    }
+
 }

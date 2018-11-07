@@ -1,6 +1,7 @@
 package com.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class Product {
     private Integer id;
@@ -22,6 +23,43 @@ public class Product {
     private Category category;
 
     private Productimage firstProductImage;
+
+    private List<Productimage> productSingleImages;
+    private List<Productimage> productDetailImages;
+    private int saleCount;
+    private int reviewCount;
+
+    public List<Productimage> getProductSingleImages() {
+        return productSingleImages;
+    }
+
+    public void setProductSingleImages(List<Productimage> productSingleImages) {
+        this.productSingleImages = productSingleImages;
+    }
+
+    public List<Productimage> getProductDetailImages() {
+        return productDetailImages;
+    }
+
+    public void setProductDetailImages(List<Productimage> productDetailImages) {
+        this.productDetailImages = productDetailImages;
+    }
+
+    public int getSaleCount() {
+        return saleCount;
+    }
+
+    public void setSaleCount(int saleCount) {
+        this.saleCount = saleCount;
+    }
+
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
 
     public Productimage getFirstProductImage() {
         return firstProductImage;

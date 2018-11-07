@@ -12,6 +12,6 @@
 </head>
 <body>
 <h1>Hello SSM</h1>
-<%response.sendRedirect("admin_category_list");%>
+<%response.sendRedirect("foreHome");%>
 </body>
 </html>

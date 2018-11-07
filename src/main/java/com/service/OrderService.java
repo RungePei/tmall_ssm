@@ -1,6 +1,7 @@
 package com.service;
 
 import com.pojo.Order;
+import com.pojo.Orderitem;
 
 import java.util.List;
 
@@ -22,4 +23,8 @@ public interface OrderService {
     Order get(int id);
 
     List<Order> list();
+
+    float add(Order order, List<Orderitem> ois);
+
+    List<Order> list(int uid);
 }

@@ -7,6 +7,20 @@ public class User {
 
     private String password;
 
+    public String getAnonymousName() {
+        if (name == null)
+            return null;
+        if (name.length() <= 1)
+            return "*";
+        if (name.length() <= 2)
+            return name.charAt(0) + "*";
+        char[] names = name.toCharArray();
+        for (int i = 1; i < names.length - 1; i++) {
+            names[i] = '*';
+        }
+        return new String(names);
+    }
+
     public Integer getId() {
         return id;
     }
